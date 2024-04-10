@@ -23,7 +23,6 @@ backupCrt () {
   mkdir -p ${BACKUP_PATH}
   cp -r ${CRT_BASE_PATH} ${BACKUP_PATH}
   cp -r ${PKG_CRT_BASE_PATH} ${BACKUP_PATH}/package_cert
-  mv /usr/syno/etc/www/certificate/ /usr/syno/etc/www/certificate_bak
   echo ${BACKUP_PATH} > ${BASE_ROOT}/backup/latest
   echo 'done backupCrt'
   return 0
@@ -58,7 +57,7 @@ installAcme () {
     cd ${TEMP_PATH}
     echo 'begin downloading acme.sh tool...'
     SRC_TAR_NAME=acme.sh.tar.gz
-    curl -L -o -x ${HTTP_PROXY_URL} ${SRC_TAR_NAME} ${ACME_SH_ADDRESS}
+    curl -x ${HTTP_PROXY_URL} -L -o ${SRC_TAR_NAME} ${ACME_SH_ADDRESS}
     SRC_NAME=`tar -tzf ${SRC_TAR_NAME} | head -1 | cut -f1 -d"/"`
     tar zxvf ${SRC_TAR_NAME}
     echo 'begin installing acme.sh tool...'
@@ -147,8 +146,6 @@ revertCrt () {
   cp -rf ${BACKUP_PATH}/certificate/* ${CRT_BASE_PATH}
   echo "${BACKUP_PATH}/package_cert ${PKG_CRT_BASE_PATH}"
   cp -rf ${BACKUP_PATH}/package_cert/* ${PKG_CRT_BASE_PATH}
-  echo "/usr/syno/etc/www/certificate_bak /usr/syno/etc/www/certificate/"
-  cp -rf /usr/syno/etc/www/certificate_bak /usr/syno/etc/www/certificate
   reloadWebService
   echo 'done revertCrt'
 }
