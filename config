@@ -32,3 +32,9 @@ export CERT_SERVER=letsencrypt
 
 # ZeroSSL 注册邮箱账户
 export ACCOUNT_EMAIL="myemail@example.com"
+
+# 导出 pkcs12 证书的私钥密码
+export EXPORT_PKCS12_SECRET="xxxxxxxxxx"
+
+# plex 的证书目录
+export PLEX_CERTIFICATE_DIR="xxxxxxxxxx"

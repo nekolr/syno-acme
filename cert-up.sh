@@ -7,7 +7,6 @@ DATE_TIME=`date +%Y%m%d%H%M%S`
 # base crt path
 CRT_BASE_PATH="/usr/syno/etc/certificate"
 PKG_CRT_BASE_PATH="/usr/local/etc/certificate"
-#CRT_BASE_PATH="/Users/carl/Downloads/certificate"
 ACME_BIN_PATH=${BASE_ROOT}/acme.sh
 TEMP_PATH=${BASE_ROOT}/temp
 CRT_PATH_NAME=`cat ${CRT_BASE_PATH}/_archive/DEFAULT`
@@ -150,6 +149,14 @@ revertCrt () {
   echo 'done revertCrt'
 }
 
+copyCrt2Plex () {
+  echo 'export certificate to plex docker volume'
+  openssl pkcs12 -passout pass:${EXPORT_PKCS12_SECRET} -export -out ${DOMAIN}.p12 -inkey ${CRT_PATH}/privkey.pem -in ${CRT_PATH}/cert.pem
+  cp -f ${DOMAIN}.p12 ${PLEX_CERTIFICATE_DIR}
+  rm -f ${DOMAIN}.p12
+  docker restart plex
+}
+
 updateCrt () {
   echo '------ begin updateCrt ------'
   backupCrt
@@ -157,6 +164,7 @@ updateCrt () {
   generateCrt
   updateService
   reloadWebService
+  copyCrt2Plex
   echo '------ end updateCrt ------'
 }
 
