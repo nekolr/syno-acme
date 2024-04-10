@@ -26,3 +26,9 @@ export AWS_SECRET_ACCESS_KEY="xxxxxxx"
 
 # Linode DNS=dns_linode
 export LINODE_API_KEY="xxxxxxxx"
+
+# 证书提供商，目前支持 letsencrypt 和 zerossl
+export CERT_SERVER=letsencrypt
+
+# ZeroSSL 注册邮箱账户
+export ACCOUNT_EMAIL="myemail@example.com"
